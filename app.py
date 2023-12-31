@@ -1,11 +1,13 @@
 from flask import Flask, request, url_for, redirect, render_template
 from googletrans import Translator
-
+from transformers import AutoProcessor, SeamlessM4Tv2ForTextToText
+processor = AutoProcessor.from_pretrained("D:\\seamless-m4t-v2-large")
+model = SeamlessM4Tv2ForTextToText.from_pretrained("D:\\seamless-m4t-v2-large")
 app = Flask(__name__)
 translator = Translator()
 
 
-@app.route("/", methods=['POST', 'GET'])
+@app.post("/translate")
 def home():
     if request.method == 'POST':
         try:
@@ -31,6 +33,9 @@ def home():
 def team():
     return render_template("team.html")
 
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run("0.0.0.0", debug=True)
